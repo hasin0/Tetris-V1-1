@@ -75,3 +75,27 @@ resource "aws_instance" "web" {
     volume_size = 30
   }
 }
+
+
+
+
+
+
+resource "aws_instance" "webserver" {
+    ami = "ami-0e83be366243f524a"
+    instance_type = "t2.large"
+    key_name = "docker"
+    vpc_security_group_ids = [aws_security_group.Jenkins-sg.id]
+    user_data = templatefile("./install_jenkins.sh", {})
+    iam_instance_profile   = aws_iam_instance_profile.example_profile.name
+
+     tags = {
+    Name = "Jenkins-Argo"
+  }
+
+
+  root_block_device {
+    volume_size = 30
+  }
+  
+}
